@@ -35,7 +35,7 @@ make
 *First create the disk image:*
 
 ```bash
-qemu-img create -f raw blizzard.img 64M
+qemu-img create -f raw stack.img 64M
 ```
 *Then run the system:*
 
