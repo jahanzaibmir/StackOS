@@ -1,14 +1,15 @@
-/* =============================================================================
- B lizzardOS — kern*el/drivers/pci/pci.h
- PCI bus enumeration and config space access.
- Uses PCI Configuration Mechanism #1 (ports 0xCF8 / 0xCFC).
- ============================================================================= */
+/* kernel/drivers/pci/pci.h
+ * PCI bus enumeration and config space access
+ * uses PCI Configuration Mechanism #1 (ports 0xCF8 / 0xCFC)
+ */
 #pragma once
 #include <stdint.h>
 
+/* config space access ports */
 #define PCI_ADDR  0xCF8
 #define PCI_DATA  0xCFC
 
+/* config space register offsets */
 #define PCI_VENDOR_ID       0x00
 #define PCI_DEVICE_ID       0x02
 #define PCI_COMMAND         0x04
@@ -25,9 +26,10 @@
 #define PCI_INTERRUPT_LINE  0x3C
 #define PCI_INTERRUPT_PIN   0x3D
 
-#define PCI_CMD_IO          (1 << 0)
-#define PCI_CMD_MEM         (1 << 1)
-#define PCI_CMD_BUSMASTER   (1 << 2)
+/* command register bits */
+#define PCI_CMD_IO        (1 << 0)  /* enable I/O space access */
+#define PCI_CMD_MEM       (1 << 1)  /* enable memory space access */
+#define PCI_CMD_BUSMASTER (1 << 2)  /* enable bus mastering (DMA) */
 
 typedef struct {
     uint8_t  bus, slot, func;
@@ -37,12 +39,13 @@ typedef struct {
     int      bar_is_mmio[6];
 } pci_device_t;
 
+/* config space read/write */
 uint32_t pci_read32 (uint8_t bus, uint8_t slot, uint8_t func, uint8_t off);
 uint16_t pci_read16 (uint8_t bus, uint8_t slot, uint8_t func, uint8_t off);
 uint8_t  pci_read8  (uint8_t bus, uint8_t slot, uint8_t func, uint8_t off);
 void     pci_write32(uint8_t bus, uint8_t slot, uint8_t func, uint8_t off, uint32_t v);
 void     pci_write16(uint8_t bus, uint8_t slot, uint8_t func, uint8_t off, uint16_t v);
 
-int  pci_find_device(uint16_t vendor, uint16_t device, pci_device_t *dev);
+int  pci_find_device  (uint16_t vendor, uint16_t device, pci_device_t *dev);
 void pci_enable_device(pci_device_t *dev);
-void pci_init(void);
+void pci_init         (void);
